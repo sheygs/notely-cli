@@ -14,13 +14,12 @@ const getNote = (title) => {
 };
 
 const getNotes = () => {
-      const previousNotes = [...loadNotes()].map((note) => note.title);
+      const previousNotes = [...fetchAllNotes()].map((note) => note.title);
       console.log(chalk.bold.green("Notes List\n"), notes);
       return previousNotes;
 };
 
 const addNote = (title = "", body = "") => {
-      debugger;
       let previousNotes = [...fetchAllNotes()];
 
       const existingNote = previousNotes.find(
@@ -68,7 +67,7 @@ const removeNote = (title) => {
       }
 };
 
-const updateNote = (note) => {
+const updateNote = (note = {}) => {
       let previousNotes = [...fetchAllNotes()];
 
       const index = previousNotes.findIndex(({ id }) => id === parseInt(note.id));
@@ -79,12 +78,11 @@ const updateNote = (note) => {
       } else {
             previousNotes[index] = {
                   ...previousNotes[index],
-                  title: note.title || "",
-                  body: note.body || "",
+                  title: note.title || "No title",
+                  body: note.body || "No body",
             };
             saveNotes(previousNotes);
       }
-
 };
 
 const fetchAllNotes = () => {
