@@ -2,8 +2,8 @@ const fs = require("fs");
 const chalk = require("chalk");
 
 const getNote = (title) => {
-      const notes = [...loadNotes()];
-      const existingNote = notes.find(
+      const previousNotes = [...fetchAllNotes()];
+      const existingNote = previousNotes.find(
             (note) => note.title.toLowerCase() === title.trim().toLowerCase()
       );
 
@@ -14,34 +14,34 @@ const getNote = (title) => {
 };
 
 const getNotes = () => {
-      const notes = [...loadNotes()].map((note) => note.title);
+      const previousNotes = [...loadNotes()].map((note) => note.title);
       console.log(chalk.bold.green("Notes List\n"), notes);
-      return notes;
+      return previousNotes;
 };
 
-const addNote = (title, body) => {
+const addNote = (title = "", body = "") => {
       debugger;
-      let notes = [...loadNotes()];
+      let previousNotes = [...fetchAllNotes()];
 
-      const existingNote = notes.find(
+      const existingNote = previousNotes.find(
             (note) => note.title.trim().toLowerCase() === title.trim().toLowerCase()
       );
 
       if (!existingNote) {
             const note = {
-                  id: notes.length + 1,
-                  title: title || "",
-                  body: body || "",
+                  id: previousNotes.length + 1,
+                  title,
+                  body,
             };
-            notes = [...notes, note];
+            previousNotes = [...previousNotes, note];
             console.log(chalk.bold.green("Note added!"));
-            saveNotes(notes);
+            saveNotes(previousNotes);
       } else {
             console.log(chalk.bold.red("title already taken"));
       }
 };
 
-const saveNotes = (notes) => {
+const saveNotes = (notes = []) => {
       if (Array.isArray(notes)) {
             const notesJson = JSON.stringify(notes);
             fs.writeFileSync("notes.json", notesJson);
@@ -50,7 +50,7 @@ const saveNotes = (notes) => {
 
 const removeNote = (title) => {
       try {
-            const notes = [...loadNotes()];
+            const notes = [...fetchAllNotes()];
 
             const remainingNotes = notes.filter(
                   (note) => note.title.toLowerCase() !== title.toLowerCase()
@@ -68,9 +68,26 @@ const removeNote = (title) => {
       }
 };
 
-const updateNote = (note) => {};
+const updateNote = (note) => {
+      let previousNotes = [...fetchAllNotes()];
 
-const loadNotes = () => {
+      const index = previousNotes.findIndex(({ id }) => id === parseInt(note.id));
+
+      if (index < 0) {
+            console.log(chalk.bold.grey("Note with the given index not found"));
+            return;
+      } else {
+            previousNotes[index] = {
+                  ...previousNotes[index],
+                  title: note.title || "",
+                  body: note.body || "",
+            };
+            saveNotes(previousNotes);
+      }
+
+};
+
+const fetchAllNotes = () => {
       try {
             const dataBuffer = fs.readFileSync("./db/notes.json");
             const dataToJson = dataBuffer.toString();

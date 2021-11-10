@@ -1,8 +1,6 @@
 const yargs = require("yargs");
 const NoteService = require("./services/note.service");
 
-// Add
-
 yargs.command({
       command: "add",
       description: "Add a new note",
@@ -23,8 +21,6 @@ yargs.command({
       },
 });
 
-//Remove
-
 yargs.command({
       command: "remove",
       description: "Remove an existing note",
@@ -39,8 +35,6 @@ yargs.command({
             NoteService.removeNote(argv.title);
       },
 });
-
-// Read
 
 yargs.command({
       command: "read",
@@ -57,7 +51,6 @@ yargs.command({
       },
 });
 
-// List
 yargs.command({
       command: "list",
       description: "Get all notes",
@@ -66,11 +59,16 @@ yargs.command({
       },
 });
 
-// Update
 yargs.command({
       command: "update",
       description: "Update a note",
       builder: {
+            id: {
+                  description: "note index",
+                  demand: true,
+                  type: "string",
+            },
+
             title: {
                   description: "note title",
                   demand: false,
@@ -83,7 +81,7 @@ yargs.command({
             },
       },
       handler(argv) {
-            NoteService.updateNote({ title: argv.title, body: argv.body });
+            NoteService.updateNote({ id: argv.id, title: argv.title, body: argv.body });
       },
 });
 
