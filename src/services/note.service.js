@@ -72,7 +72,7 @@ const updateNote = (note) => {};
 
 const loadNotes = () => {
       try {
-            const dataBuffer = fs.readFileSync("notes.json");
+            const dataBuffer = fs.readFileSync("./db/notes.json");
             const dataToJson = dataBuffer.toString();
             const data = JSON.parse(dataToJson);
             return data;
@@ -83,10 +83,12 @@ const loadNotes = () => {
       }
 };
 
-module.exports = {
+const NoteService = {
       addNote,
       removeNote,
       updateNote,
       getNote,
       getNotes,
 };
+
+module.exports = NoteService;

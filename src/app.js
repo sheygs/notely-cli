@@ -1,5 +1,5 @@
 const yargs = require("yargs");
-const noteUtils = require("./notes");
+const NoteService = require("./services/note.service");
 
 // Add
 
@@ -19,7 +19,7 @@ yargs.command({
             },
       },
       handler(argv) {
-            noteUtils.addNote(argv.title, argv.body);
+            NoteService.addNote(argv.title, argv.body);
       },
 });
 
@@ -36,7 +36,7 @@ yargs.command({
             },
       },
       handler(argv) {
-            noteUtils.removeNote(argv.title);
+            NoteService.removeNote(argv.title);
       },
 });
 
@@ -53,7 +53,7 @@ yargs.command({
             },
       },
       handler(argv) {
-            noteUtils.getNote(argv.title);
+            NoteService.getNote(argv.title);
       },
 });
 
@@ -62,7 +62,7 @@ yargs.command({
       command: "list",
       description: "Get all notes",
       handler() {
-            noteUtils.getNotes();
+            NoteService.getNotes();
       },
 });
 
@@ -83,7 +83,7 @@ yargs.command({
             },
       },
       handler(argv) {
-            noteUtils.updateNote({ title: argv.title, body: argv.body });
+            NoteService.updateNote({ title: argv.title, body: argv.body });
       },
 });
 
