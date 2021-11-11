@@ -1,1 +1,1 @@
-## Notely API
+## Notely CLI
