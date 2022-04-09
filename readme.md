@@ -1,1 +1,1 @@
-## Notely CLI
+### Notely CLI
